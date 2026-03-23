@@ -1,0 +1,1640 @@
+<!DOCTYPE html>
+<!-- saved from url=(0042)file:///C:/Users/hp/Downloads/devpath.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DevPath — Engineer Your Future</title>
+<link href="./DevPath — Engineer Your Future_files/css2" rel="stylesheet">
+<style>
+:root {
+  --ink: #05080f;
+  --ink2: #0b1120;
+  --ink3: #111827;
+  --line: rgba(255,255,255,0.06);
+  --line2: rgba(255,255,255,0.12);
+  --white: #f0f4ff;
+  --dim: #6b7a9a;
+  --dimmer: #3d4a66;
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+body{
+  font-family:'Cabinet Grotesk',sans-serif;
+  background:var(--ink);
+  color:var(--white);
+  min-height:100vh;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ── CURSOR ── */
+#cursor{
+  position:fixed;width:12px;height:12px;
+  background:var(--white);border-radius:50%;
+  pointer-events:none;z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform .15s,width .2s,height .2s,background .2s;
+  mix-blend-mode:difference;
+}
+#cursor-ring{
+  position:fixed;width:40px;height:40px;
+  border:1px solid rgba(255,255,255,0.3);border-radius:50%;
+  pointer-events:none;z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:all .35s ease;
+}
+body:has(button:hover) #cursor,body:has(a:hover) #cursor{width:6px;height:6px}
+body:has(button:hover) #cursor-ring,body:has(a:hover) #cursor-ring{width:60px;height:60px;border-color:rgba(255,255,255,0.5)}
+
+/* ── CANVAS BG ── */
+#bgCanvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 48px;height:72px;
+  background:rgba(5,8,15,0.7);
+  backdrop-filter:blur(24px);
+  border-bottom:1px solid var(--line);
+}
+.nav-brand{
+  display:flex;align-items:center;gap:12px;
+  font-family:'Clash Display',sans-serif;
+  font-size:1.25rem;font-weight:600;letter-spacing:-.5px;
+  color:var(--white);text-decoration:none;
+}
+.brand-mark{
+  width:36px;height:36px;border-radius:10px;
+  background:linear-gradient(135deg,#4f8ef7,#a78bfa);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:700;color:#fff;
+  letter-spacing:.5px;
+}
+.nav-back{
+  display:none;align-items:center;gap:8px;
+  background:var(--ink3);border:1px solid var(--line2);
+  color:var(--dim);border-radius:8px;padding:8px 16px;
+  font-size:.85rem;cursor:pointer;transition:all .2s;
+}
+.nav-back:hover{color:var(--white);border-color:var(--line2)}
+.nav-back.show{display:flex}
+
+/* ── SCREENS ── */
+.screen{
+  position:relative;z-index:1;
+  min-height:100vh;
+  display:none;
+  flex-direction:column;
+  align-items:center;
+}
+.screen.active{display:flex}
+
+/* ══════════════════════════════
+   SCREEN 1 — HOME
+══════════════════════════════ */
+#s-home{padding:72px 24px 60px;justify-content:flex-start}
+
+.home-hero{
+  display:flex;flex-direction:column;align-items:center;
+  text-align:center;padding:80px 0 60px;max-width:720px;
+}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(79,142,247,.1);
+  border:1px solid rgba(79,142,247,.25);
+  border-radius:999px;padding:6px 18px;
+  font-size:.78rem;font-weight:500;color:#7ab3fc;
+  margin-bottom:32px;
+  animation:riseIn .7s ease both;
+}
+.live-dot{
+  width:7px;height:7px;border-radius:50%;
+  background:#4ade80;
+  box-shadow:0 0 10px #4ade80;
+  animation:blink 2s infinite;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+
+.home-hero h1{
+  font-family:'Clash Display',sans-serif;
+  font-size:clamp(3rem,7vw,5.5rem);
+  font-weight:700;line-height:.95;
+  letter-spacing:-3px;
+  margin-bottom:28px;
+  animation:riseIn .7s .1s ease both;
+}
+.h1-grad{
+  background:linear-gradient(135deg,#fff 30%,#7ab3fc 70%,#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.h1-outline{
+  -webkit-text-stroke:1.5px rgba(255,255,255,.2);
+  -webkit-text-fill-color:transparent;
+}
+.home-hero p{
+  font-size:1.05rem;color:var(--dim);line-height:1.8;
+  max-width:480px;font-weight:400;
+  animation:riseIn .7s .2s ease both;
+  margin-bottom:0;
+}
+
+.section-label{
+  width:100%;max-width:1100px;margin:0 auto;
+  display:flex;align-items:center;gap:16px;
+  margin-bottom:32px;
+}
+.section-label span{
+  font-size:.72rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--dimmer);font-weight:500;
+}
+.section-label::after{
+  content:'';flex:1;height:1px;background:var(--line);
+}
+
+/* ── TRACKS GRID ── */
+.tracks-grid{
+  width:100%;max-width:1100px;margin:0 auto;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+
+.track-card{
+  background:var(--ink2);
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:32px 28px;
+  cursor:pointer;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;
+  animation:riseIn .6s ease both;
+}
+.track-card::before{
+  content:'';position:absolute;inset:0;opacity:0;
+  transition:opacity .4s;border-radius:20px;
+}
+.track-card:hover{transform:translateY(-6px) scale(1.01);border-color:var(--line2)}
+.track-card:hover::before{opacity:1}
+.track-card:nth-child(1){animation-delay:.05s}
+.track-card:nth-child(2){animation-delay:.1s}
+.track-card:nth-child(3){animation-delay:.15s}
+.track-card:nth-child(4){animation-delay:.2s;grid-column:span 1}
+.track-card:nth-child(5){animation-delay:.25s}
+
+.tc-blue::before{background:radial-gradient(ellipse at 0 0,rgba(79,142,247,.12),transparent 70%)}
+.tc-purple::before{background:radial-gradient(ellipse at 0 0,rgba(167,139,250,.12),transparent 70%)}
+.tc-cyan::before{background:radial-gradient(ellipse at 0 0,rgba(34,211,238,.12),transparent 70%)}
+.tc-green::before{background:radial-gradient(ellipse at 0 0,rgba(74,222,128,.12),transparent 70%)}
+.tc-rose::before{background:radial-gradient(ellipse at 0 0,rgba(251,113,133,.12),transparent 70%)}
+
+.track-emoji-wrap{
+  width:56px;height:56px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1.6rem;margin-bottom:20px;
+  position:relative;
+}
+.tc-blue .track-emoji-wrap{background:rgba(79,142,247,.12)}
+.tc-purple .track-emoji-wrap{background:rgba(167,139,250,.12)}
+.tc-cyan .track-emoji-wrap{background:rgba(34,211,238,.12)}
+.tc-green .track-emoji-wrap{background:rgba(74,222,128,.12)}
+.tc-rose .track-emoji-wrap{background:rgba(251,113,133,.12)}
+
+.track-name{
+  font-family:'Clash Display',sans-serif;
+  font-size:1.2rem;font-weight:600;margin-bottom:8px;
+  letter-spacing:-.3px;
+}
+.track-tagline{
+  font-size:.85rem;color:var(--dim);line-height:1.6;
+  margin-bottom:20px;font-weight:400;
+}
+.track-pills{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:24px}
+.pill{
+  font-size:.7rem;font-weight:500;letter-spacing:.5px;
+  padding:3px 10px;border-radius:999px;
+}
+.tc-blue .pill{background:rgba(79,142,247,.1);color:#7ab3fc;border:1px solid rgba(79,142,247,.2)}
+.tc-purple .pill{background:rgba(167,139,250,.1);color:#c4b5fd;border:1px solid rgba(167,139,250,.2)}
+.tc-cyan .pill{background:rgba(34,211,238,.1);color:#67e8f9;border:1px solid rgba(34,211,238,.2)}
+.tc-green .pill{background:rgba(74,222,128,.1);color:#86efac;border:1px solid rgba(74,222,128,.2)}
+.tc-rose .pill{background:rgba(251,113,133,.1);color:#fda4af;border:1px solid rgba(251,113,133,.2)}
+
+.track-cta{
+  display:flex;align-items:center;gap:8px;
+  font-size:.85rem;font-weight:600;
+  transition:gap .2s;
+}
+.tc-blue .track-cta{color:#7ab3fc}
+.tc-purple .track-cta{color:#c4b5fd}
+.tc-cyan .track-cta{color:#67e8f9}
+.tc-green .track-cta{color:#86efac}
+.tc-rose .track-cta{color:#fda4af}
+.track-card:hover .track-cta{gap:14px}
+
+.cta-arrow{
+  width:28px;height:28px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:.9rem;border:1px solid currentColor;
+  transition:transform .2s;
+}
+.track-card:hover .cta-arrow{transform:rotate(-45deg)}
+
+/* bottom row of 2 cards */
+.tracks-grid .track-card:nth-child(4),
+.tracks-grid .track-card:nth-child(5){
+  /* normal */
+}
+
+/* ══════════════════════════════
+   SCREEN 2 — QUIZ
+══════════════════════════════ */
+#s-quiz{
+  padding:72px 24px 60px;
+  justify-content:center;align-items:center;
+}
+
+.quiz-shell{
+  width:100%;max-width:680px;
+  animation:riseIn .5s ease both;
+}
+
+.quiz-top{
+  display:flex;justify-content:space-between;align-items:center;
+  margin-bottom:36px;
+}
+
+.quiz-meta{
+  display:flex;flex-direction:column;gap:8px;
+}
+.quiz-track-label{
+  display:flex;align-items:center;gap:8px;
+  font-size:.8rem;color:var(--dim);
+}
+.quiz-track-chip{
+  display:inline-flex;align-items:center;gap:6px;
+  background:var(--ink3);border:1px solid var(--line2);
+  border-radius:999px;padding:4px 12px;
+  font-size:.78rem;font-weight:500;
+}
+
+.timer-ring-wrap{position:relative;width:56px;height:56px}
+.timer-ring-wrap svg{transform:rotate(-90deg)}
+.t-bg{fill:none;stroke:var(--line);stroke-width:3}
+.t-fg{fill:none;stroke:#4f8ef7;stroke-width:3;stroke-linecap:round;
+  stroke-dasharray:145;stroke-dashoffset:0;transition:stroke-dashoffset 1s linear,stroke .3s}
+.timer-num{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Clash Display',sans-serif;font-size:1rem;font-weight:600;
+}
+
+.progress-track{
+  height:3px;background:var(--line);border-radius:999px;
+  margin-bottom:44px;overflow:hidden;
+}
+.progress-fill{
+  height:100%;background:linear-gradient(90deg,#4f8ef7,#a78bfa);
+  border-radius:999px;transition:width .5s ease;
+}
+
+.q-number{
+  font-size:.75rem;letter-spacing:2px;text-transform:uppercase;
+  color:var(--dimmer);margin-bottom:14px;
+}
+.q-text{
+  font-family:'Clash Display',sans-serif;
+  font-size:clamp(1.4rem,3vw,2rem);
+  font-weight:600;letter-spacing:-.5px;
+  line-height:1.2;margin-bottom:40px;
+}
+
+.q-options{display:flex;flex-direction:column;gap:10px}
+.q-opt{
+  background:var(--ink2);
+  border:1px solid var(--line);
+  border-radius:14px;padding:18px 22px;
+  cursor:pointer;
+  display:flex;align-items:center;gap:14px;
+  font-size:.95rem;font-weight:400;color:var(--white);
+  transition:all .25s;text-align:left;
+  font-family:'Cabinet Grotesk',sans-serif;
+}
+.q-opt:hover{background:var(--ink3);border-color:var(--line2);transform:translateX(4px)}
+.q-opt.picked{border-color:#4f8ef7;background:rgba(79,142,247,.08);color:#7ab3fc}
+.q-opt-idx{
+  width:28px;height:28px;border-radius:8px;
+  background:var(--ink3);border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.75rem;font-weight:600;color:var(--dim);flex-shrink:0;
+  transition:all .25s;
+}
+.q-opt.picked .q-opt-idx{background:#4f8ef7;border-color:#4f8ef7;color:#fff}
+
+/* ══════════════════════════════
+   SCREEN 3 — RESULT
+══════════════════════════════ */
+#s-result{
+  padding:72px 24px 60px;
+  justify-content:center;align-items:center;
+}
+
+.result-shell{
+  width:100%;max-width:740px;
+  animation:riseIn .5s ease both;
+}
+
+.result-hero{
+  text-align:center;margin-bottom:60px;
+}
+.result-match-label{
+  font-size:.75rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--dimmer);margin-bottom:20px;
+}
+.result-icon-wrap{
+  width:100px;height:100px;border-radius:24px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:3rem;margin:0 auto 24px;
+  position:relative;
+}
+.result-icon-wrap::after{
+  content:'';position:absolute;inset:-2px;border-radius:26px;
+  background:linear-gradient(135deg,#4f8ef7,#a78bfa);
+  z-index:-1;opacity:.5;filter:blur(8px);
+}
+.result-name{
+  font-family:'Clash Display',sans-serif;
+  font-size:clamp(2rem,5vw,3.5rem);
+  font-weight:700;letter-spacing:-1.5px;margin-bottom:12px;
+}
+.result-desc{
+  font-size:1rem;color:var(--dim);line-height:1.8;
+  max-width:500px;margin:0 auto 32px;
+}
+.result-score-row{
+  display:flex;justify-content:center;gap:20px;flex-wrap:wrap;
+  margin-bottom:48px;
+}
+.score-chip{
+  display:flex;align-items:center;gap:8px;
+  background:var(--ink2);border:1px solid var(--line);
+  border-radius:10px;padding:10px 18px;
+  font-size:.85rem;
+}
+.score-num{
+  font-family:'Clash Display',sans-serif;
+  font-size:1.1rem;font-weight:600;
+}
+
+.result-actions{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  font-family:'Cabinet Grotesk',sans-serif;
+  font-size:.92rem;font-weight:600;
+  padding:13px 26px;border-radius:12px;
+  cursor:pointer;border:none;transition:all .25s;
+}
+.btn-fill{
+  background:linear-gradient(135deg,#4f8ef7,#7c6ef5);
+  color:#fff;
+  box-shadow:0 8px 24px rgba(79,142,247,.3);
+}
+.btn-fill:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(79,142,247,.4)}
+.btn-outline{
+  background:transparent;
+  border:1px solid var(--line2);color:var(--dim);
+}
+.btn-outline:hover{border-color:rgba(255,255,255,.2);color:var(--white)}
+
+/* ══════════════════════════════
+   SCREEN 4 — ROADMAP
+══════════════════════════════ */
+#s-roadmap{
+  padding:72px 24px 80px;
+  align-items:center;
+}
+
+.roadmap-shell{width:100%;max-width:900px;padding-top:40px}
+
+.roadmap-header{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  margin-bottom:60px;flex-wrap:wrap;gap:20px;
+}
+.roadmap-header-left{}
+.rh-eyebrow{
+  font-size:.72rem;letter-spacing:3px;text-transform:uppercase;
+  color:var(--dimmer);margin-bottom:10px;
+}
+.rh-title{
+  font-family:'Clash Display',sans-serif;
+  font-size:clamp(1.8rem,4vw,3rem);
+  font-weight:700;letter-spacing:-1px;
+  margin-bottom:8px;
+}
+.rh-sub{font-size:.9rem;color:var(--dim);line-height:1.6}
+
+.rh-stats{
+  display:flex;gap:24px;
+}
+.rh-stat{
+  display:flex;flex-direction:column;align-items:center;
+  background:var(--ink2);border:1px solid var(--line);
+  border-radius:12px;padding:14px 20px;min-width:80px;text-align:center;
+}
+.rh-stat-n{
+  font-family:'Clash Display',sans-serif;
+  font-size:1.5rem;font-weight:700;
+  background:linear-gradient(135deg,#4f8ef7,#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+}
+.rh-stat-l{font-size:.72rem;color:var(--dimmer);margin-top:2px}
+
+/* phases */
+.phases{display:flex;flex-direction:column;gap:0}
+
+.phase{
+  display:flex;gap:0;
+  position:relative;
+}
+
+.phase-spine{
+  display:flex;flex-direction:column;align-items:center;
+  width:48px;flex-shrink:0;padding-top:4px;
+}
+.phase-node{
+  width:40px;height:40px;border-radius:12px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:1rem;flex-shrink:0;
+  border:1px solid var(--line);
+  transition:all .3s;
+  cursor:pointer;
+  position:relative;z-index:2;
+}
+.phase.done .phase-node{
+  background:linear-gradient(135deg,#4f8ef7,#7c6ef5)!important;
+  border-color:transparent;
+  box-shadow:0 0 20px rgba(79,142,247,.4);
+}
+.phase.active-phase .phase-node{
+  box-shadow:0 0 0 4px rgba(79,142,247,.15);
+}
+
+.phase-line{
+  width:2px;flex:1;min-height:20px;
+  background:linear-gradient(var(--line),var(--line));
+  margin:6px 0;
+  transition:background .5s;
+}
+.phase.done .phase-line{
+  background:linear-gradient(#4f8ef7,#7c6ef5);
+}
+
+.phase-body{
+  flex:1;padding:0 0 40px 20px;
+}
+
+.phase-header{
+  display:flex;align-items:center;gap:12px;margin-bottom:16px;
+  padding-top:8px;
+}
+.phase-num{
+  font-size:.72rem;letter-spacing:2px;text-transform:uppercase;
+  color:var(--dimmer);
+}
+.phase-title{
+  font-family:'Clash Display',sans-serif;
+  font-size:1.15rem;font-weight:600;letter-spacing:-.3px;
+}
+.phase-duration{
+  margin-left:auto;
+  font-size:.75rem;color:var(--dim);
+  background:var(--ink2);border:1px solid var(--line);
+  border-radius:999px;padding:2px 10px;
+  white-space:nowrap;
+}
+
+.steps-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:10px;
+}
+
+.step-card{
+  background:var(--ink2);border:1px solid var(--line);
+  border-radius:12px;padding:14px 16px;
+  transition:all .25s;cursor:pointer;
+  position:relative;overflow:hidden;
+}
+.step-card::before{
+  content:'';position:absolute;top:0;left:0;width:3px;height:100%;
+  background:linear-gradient(180deg,#4f8ef7,#a78bfa);
+  opacity:0;transition:opacity .2s;
+}
+.step-card:hover{border-color:var(--line2);transform:translateY(-2px)}
+.step-card:hover::before{opacity:1}
+.step-card.completed{opacity:.6}
+.step-card.completed .step-name{text-decoration:line-through}
+
+.step-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+.step-icon{font-size:.95rem}
+.step-check{
+  width:18px;height:18px;border-radius:5px;
+  border:1px solid var(--line);
+  display:flex;align-items:center;justify-content:center;
+  font-size:.6rem;cursor:pointer;transition:all .2s;
+  flex-shrink:0;
+}
+.step-card.completed .step-check{
+  background:linear-gradient(135deg,#4f8ef7,#7c6ef5);
+  border-color:transparent;color:#fff;
+}
+.step-name{
+  font-size:.85rem;font-weight:500;margin-bottom:4px;line-height:1.3;
+}
+.step-type{
+  font-size:.7rem;color:var(--dimmer);
+}
+
+/* overall progress bar */
+.overall-progress{
+  background:var(--ink2);border:1px solid var(--line);
+  border-radius:16px;padding:24px 28px;
+  margin-bottom:40px;
+  display:flex;align-items:center;gap:24px;
+  flex-wrap:wrap;
+}
+.op-label{font-size:.8rem;color:var(--dim);margin-bottom:6px}
+.op-bar-wrap{flex:1;min-width:160px}
+.op-bar{height:6px;background:var(--ink3);border-radius:999px;overflow:hidden;margin-top:4px}
+.op-fill{
+  height:100%;border-radius:999px;
+  background:linear-gradient(90deg,#4f8ef7,#a78bfa);
+  transition:width .6s ease;width:0%;
+}
+.op-pct{
+  font-family:'Clash Display',sans-serif;
+  font-size:2rem;font-weight:700;
+  background:linear-gradient(135deg,#4f8ef7,#a78bfa);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  white-space:nowrap;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes riseIn{
+  from{opacity:0;transform:translateY(24px)}
+  to{opacity:1;transform:translateY(0)}
+}
+@keyframes popIn{
+  from{opacity:0;transform:scale(.9)}
+  to{opacity:1;transform:scale(1)}
+}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .tracks-grid{grid-template-columns:repeat(2,1fr)}
+  nav{padding:0 20px}
+}
+@media(max-width:600px){
+  .tracks-grid{grid-template-columns:1fr}
+  .steps-grid{grid-template-columns:1fr 1fr}
+  .rh-stats{gap:10px}
+}
+</style>
+</head>
+<body>
+
+<div id="cursor" style="left: 462px; top: 4px;"></div>
+<div id="cursor-ring" style="left: 462px; top: 4px;"></div>
+<canvas id="bgCanvas" width="770" height="730"></canvas>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="file:///C:/Users/hp/Downloads/devpath.html#" onclick="goHome();return false">
+    <div class="brand-mark">DP</div>
+    DevPath
+  </a>
+  <button class="nav-back" id="navBack" onclick="goBack()">
+    ← Back
+  </button>
+</nav>
+
+<!-- ══════════ SCREEN 1: HOME ══════════ -->
+<div class="screen active" id="s-home">
+
+  <div class="home-hero">
+    <div class="hero-tag"><span class="live-dot"></span> Engineer Your Future</div>
+    <h1>
+      <span class="h1-grad">Choose</span> your<br>
+      <span class="h1-outline">engineering</span><br>
+      <span class="h1-grad">path.</span>
+    </h1>
+    <p>Select a track below to take a personalized assessment — then unlock your full roadmap.</p>
+  </div>
+
+  <div class="section-label" style="max-width:1100px;width:100%;padding:0 24px">
+    <span>Select a specialization</span>
+  </div>
+
+  <div class="tracks-grid" id="tracksGrid"><div class="track-card tc-blue" style="animation-delay: 0s;">
+      <div class="track-emoji-wrap">💻</div>
+      <div class="track-name">Software Engineering</div>
+      <div class="track-tagline">Build the systems that power the modern world.</div>
+      <div class="track-pills"><span class="pill">Web Dev</span><span class="pill">Algorithms</span><span class="pill">System Design</span><span class="pill">Cloud</span></div>
+      <div class="track-cta">Take the Assessment <div class="cta-arrow">→</div></div>
+    </div><div class="track-card tc-cyan" style="animation-delay: 0.06s;">
+      <div class="track-emoji-wrap">🛡️</div>
+      <div class="track-name">Cyber Security</div>
+      <div class="track-tagline">Defend the digital world from those who would break it.</div>
+      <div class="track-pills"><span class="pill">Pentesting</span><span class="pill">Networks</span><span class="pill">Cryptography</span><span class="pill">Forensics</span></div>
+      <div class="track-cta">Take the Assessment <div class="cta-arrow">→</div></div>
+    </div><div class="track-card tc-purple" style="animation-delay: 0.12s;">
+      <div class="track-emoji-wrap">🤖</div>
+      <div class="track-name">AI &amp; Data Science</div>
+      <div class="track-tagline">Train machines to think, learn, and decide.</div>
+      <div class="track-pills"><span class="pill">Machine Learning</span><span class="pill">Deep Learning</span><span class="pill">NLP</span><span class="pill">Data Engineering</span></div>
+      <div class="track-cta">Take the Assessment <div class="cta-arrow">→</div></div>
+    </div><div class="track-card tc-green" style="animation-delay: 0.18s;">
+      <div class="track-emoji-wrap">🧬</div>
+      <div class="track-name">Bio-informatics</div>
+      <div class="track-tagline">Decode the language written in every living cell.</div>
+      <div class="track-pills"><span class="pill">Genomics</span><span class="pill">Protein Structure</span><span class="pill">Clinical Data</span><span class="pill">R &amp; Python</span></div>
+      <div class="track-cta">Take the Assessment <div class="cta-arrow">→</div></div>
+    </div><div class="track-card tc-rose" style="animation-delay: 0.24s;">
+      <div class="track-emoji-wrap">⚙️</div>
+      <div class="track-name">Computer Engineering</div>
+      <div class="track-tagline">Design the machines at the heart of everything.</div>
+      <div class="track-pills"><span class="pill">Embedded Systems</span><span class="pill">VLSI</span><span class="pill">IoT</span><span class="pill">FPGA</span></div>
+      <div class="track-cta">Take the Assessment <div class="cta-arrow">→</div></div>
+    </div></div>
+
+</div>
+
+<!-- ══════════ SCREEN 2: QUIZ ══════════ -->
+<div class="screen" id="s-quiz">
+  <div class="quiz-shell">
+    <div class="quiz-top">
+      <div class="quiz-meta">
+        <div class="quiz-track-label">Assessment for</div>
+        <div class="quiz-track-chip" id="qTrackChip">💻 Software Engineering</div>
+      </div>
+      <div class="timer-ring-wrap">
+        <svg width="56" height="56" viewBox="0 0 56 56">
+          <circle class="t-bg" cx="28" cy="28" r="23"></circle>
+          <circle class="t-fg" id="timerArc" cx="28" cy="28" r="23"></circle>
+        </svg>
+        <div class="timer-num" id="timerNum">15</div>
+      </div>
+    </div>
+
+    <div class="progress-track"><div class="progress-fill" id="qProgressBar" style="width:0%"></div></div>
+
+    <div class="q-number" id="qNum">Question 1 / 6</div>
+    <div class="q-text" id="qText">Loading...</div>
+    <div class="q-options" id="qOptions"></div>
+  </div>
+</div>
+
+<!-- ══════════ SCREEN 3: RESULT ══════════ -->
+<div class="screen" id="s-result">
+  <div class="result-shell">
+    <div class="result-hero">
+      <div class="result-match-label">Your Assessment Result</div>
+      <div class="result-icon-wrap" id="rIcon" style="background:rgba(79,142,247,.1)">💻</div>
+      <div class="result-name" id="rName">Software Engineering</div>
+      <p class="result-desc" id="rDesc">Description</p>
+      <div class="result-score-row" id="rScores"></div>
+      <div class="result-actions">
+        <button class="btn btn-fill" onclick="goRoadmap()">View My Roadmap →</button>
+        <button class="btn btn-outline" onclick="retakeQuiz()">Retake Quiz</button>
+        <button class="btn btn-outline" onclick="goHome()">← All Tracks</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ SCREEN 4: ROADMAP ══════════ -->
+<div class="screen" id="s-roadmap">
+  <div class="roadmap-shell">
+
+    <div class="roadmap-header">
+      <div class="roadmap-header-left">
+        <div class="rh-eyebrow">Your Personalized Roadmap</div>
+        <div class="rh-title" id="rmTitle">Software Engineering</div>
+        <div class="rh-sub" id="rmSub">Follow these phases to build real-world expertise.</div>
+      </div>
+      <div class="rh-stats">
+        <div class="rh-stat"><div class="rh-stat-n" id="rmPhases">5</div><div class="rh-stat-l">Phases</div></div>
+        <div class="rh-stat"><div class="rh-stat-n" id="rmTopics">24</div><div class="rh-stat-l">Topics</div></div>
+        <div class="rh-stat"><div class="rh-stat-n" id="rmMonths">12</div><div class="rh-stat-l">Months</div></div>
+      </div>
+    </div>
+
+    <div class="overall-progress">
+      <div class="op-pct" id="opPct">0%</div>
+      <div class="op-bar-wrap">
+        <div class="op-label">Overall Progress</div>
+        <div class="op-bar"><div class="op-fill" id="opFill"></div></div>
+      </div>
+    </div>
+
+    <div class="phases" id="phasesContainer"></div>
+
+  </div>
+</div>
+
+<script>
+// ── CURSOR ──
+const cur = document.getElementById('cursor');
+const ring = document.getElementById('cursor-ring');
+document.addEventListener('mousemove', e => {
+  cur.style.left = e.clientX + 'px';
+  cur.style.top = e.clientY + 'px';
+  setTimeout(() => {
+    ring.style.left = e.clientX + 'px';
+    ring.style.top = e.clientY + 'px';
+  }, 60);
+});
+
+// ── CANVAS PARTICLES ──
+const canvas = document.getElementById('bgCanvas');
+const ctx = canvas.getContext('2d');
+let particles = [];
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+class Particle {
+  constructor() { this.reset(); }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.r = Math.random() * 1.5 + .3;
+    this.vx = (Math.random() - .5) * .2;
+    this.vy = (Math.random() - .5) * .2;
+    this.alpha = Math.random() * .4 + .1;
+    this.color = Math.random() > .5 ? '79,142,247' : '167,139,250';
+  }
+  update() {
+    this.x += this.vx; this.y += this.vy;
+    if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this.reset();
+  }
+  draw() {
+    ctx.beginPath();
+    ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(${this.color},${this.alpha})`;
+    ctx.fill();
+  }
+}
+for (let i = 0; i < 120; i++) particles.push(new Particle());
+function animateParticles() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => { p.update(); p.draw(); });
+  // draw connections
+  for (let i = 0; i < particles.length; i++) {
+    for (let j = i + 1; j < particles.length; j++) {
+      const dx = particles[i].x - particles[j].x;
+      const dy = particles[i].y - particles[j].y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < 100) {
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(79,142,247,${(1 - dist / 100) * .06})`;
+        ctx.lineWidth = .5;
+        ctx.stroke();
+      }
+    }
+  }
+  requestAnimationFrame(animateParticles);
+}
+animateParticles();
+
+// ═══════════════════════════════════
+//  DATA
+// ═══════════════════════════════════
+const TRACKS = {
+  se: {
+    emoji: '💻', name: 'Software Engineering',
+    color: 'tc-blue', accentColor: '#4f8ef7',
+    tagline: 'Build the systems that power the modern world.',
+    pills: ['Web Dev', 'Algorithms', 'System Design', 'Cloud'],
+    desc: 'Software Engineers architect, build, and scale digital products used by billions. From startups to FAANG, this is the most in-demand engineering discipline of our era.',
+    questions: [
+      { q: 'How comfortable are you with mathematics & logic?',
+        opts: [
+          { t: 'Very — I enjoy problem-solving', w: 3 },
+          { t: 'Somewhat — I can work through it', w: 2 },
+          { t: 'Learning — it\'s a work in progress', w: 1 },
+          { t: 'Not at all — I prefer other areas', w: 0 }
+        ]},
+      { q: 'What draws you to software?',
+        opts: [
+          { t: 'Creating products people actually use', w: 3 },
+          { t: 'Solving complex architecture problems', w: 3 },
+          { t: 'Making computers do what I want', w: 2 },
+          { t: 'The career opportunities', w: 1 }
+        ]},
+      { q: 'Which of these do you find most exciting?',
+        opts: [
+          { t: 'Designing a scalable system from scratch', w: 3 },
+          { t: 'Debugging a tricky performance issue', w: 3 },
+          { t: 'Building a beautiful user interface', w: 2 },
+          { t: 'Automating repetitive workflows', w: 2 }
+        ]},
+      { q: 'How do you handle learning new frameworks/tools?',
+        opts: [
+          { t: 'I dive in immediately, learn by building', w: 3 },
+          { t: 'I read docs thoroughly first', w: 2 },
+          { t: 'I follow tutorials step by step', w: 1 },
+          { t: 'I find it overwhelming', w: 0 }
+        ]},
+      { q: 'What\'s your ideal work environment?',
+        opts: [
+          { t: 'Startup — move fast, own the product', w: 3 },
+          { t: 'Big Tech — scale, impact, and resources', w: 2 },
+          { t: 'Freelance — freedom and flexibility', w: 2 },
+          { t: 'Still figuring that out', w: 1 }
+        ]},
+      { q: 'How many hours a week can you commit to learning?',
+        opts: [
+          { t: '20+ hours — I\'m all in', w: 3 },
+          { t: '10–20 hours — serious commitment', w: 2 },
+          { t: '5–10 hours — steady pace', w: 1 },
+          { t: 'Less than 5 — when I can', w: 0 }
+        ]}
+    ],
+    roadmap: {
+      months: 12,
+      phases: [
+        {
+          title: 'Foundations', duration: '2 months', emoji: '🧱',
+          steps: [
+            { icon: '📐', name: 'CS Fundamentals', type: 'Theory' },
+            { icon: '🐍', name: 'Python / JavaScript', type: 'Language' },
+            { icon: '🔢', name: 'Data Structures', type: 'Core Skill' },
+            { icon: '🧮', name: 'Algorithms Basics', type: 'Core Skill' },
+            { icon: '🖥️', name: 'Git & CLI', type: 'Tooling' },
+          ]
+        },
+        {
+          title: 'Core Engineering', duration: '3 months', emoji: '⚙️',
+          steps: [
+            { icon: '🌐', name: 'Web Technologies', type: 'Domain' },
+            { icon: '🗄️', name: 'Databases & SQL', type: 'Domain' },
+            { icon: '🔌', name: 'REST APIs', type: 'Domain' },
+            { icon: '🧩', name: 'OOP & Design Patterns', type: 'Theory' },
+            { icon: '🧪', name: 'Testing Fundamentals', type: 'Practice' },
+          ]
+        },
+        {
+          title: 'Systems & Scale', duration: '2 months', emoji: '🏗️',
+          steps: [
+            { icon: '☁️', name: 'Cloud Basics (AWS/GCP)', type: 'Platform' },
+            { icon: '🐳', name: 'Docker & Containers', type: 'Tooling' },
+            { icon: '📊', name: 'System Design Intro', type: 'Architecture' },
+            { icon: '🔐', name: 'Security Essentials', type: 'Core Skill' },
+          ]
+        },
+        {
+          title: 'Specialization', duration: '3 months', emoji: '🎯',
+          steps: [
+            { icon: '⚛️', name: 'React / Vue / Angular', type: 'Frontend' },
+            { icon: '🚀', name: 'Node.js / FastAPI', type: 'Backend' },
+            { icon: '📱', name: 'Mobile Basics', type: 'Optional' },
+            { icon: '🤖', name: 'AI Integration', type: 'Emerging' },
+            { icon: '🏛️', name: 'Microservices', type: 'Architecture' },
+          ]
+        },
+        {
+          title: 'Career Launch', duration: '2 months', emoji: '🚀',
+          steps: [
+            { icon: '💼', name: 'Portfolio Projects', type: 'Project' },
+            { icon: '🧠', name: 'LeetCode / DSA Prep', type: 'Interview' },
+            { icon: '📝', name: 'Tech Resume', type: 'Career' },
+            { icon: '🤝', name: 'Open Source Contributions', type: 'Community' },
+          ]
+        }
+      ]
+    }
+  },
+
+  cs: {
+    emoji: '🛡️', name: 'Cyber Security',
+    color: 'tc-cyan', accentColor: '#22d3ee',
+    tagline: 'Defend the digital world from those who would break it.',
+    pills: ['Pentesting', 'Networks', 'Cryptography', 'Forensics'],
+    desc: 'Cyber Security engineers are the guardians of global infrastructure. You\'ll hunt threats, break systems to fix them, and design fortresses that protect millions of people.',
+    questions: [
+      { q: 'How do you feel about networking & protocols?',
+        opts: [
+          { t: 'Fascinated — TCP/IP is poetry', w: 3 },
+          { t: 'Comfortable — I know the basics', w: 2 },
+          { t: 'Learning — still exploring', w: 1 },
+          { t: 'Not yet familiar', w: 0 }
+        ]},
+      { q: 'What excites you most about security?',
+        opts: [
+          { t: 'Finding vulnerabilities before attackers do', w: 3 },
+          { t: 'Designing impenetrable systems', w: 3 },
+          { t: 'Investigating incidents & breaches', w: 2 },
+          { t: 'The prestige & demand in the field', w: 1 }
+        ]},
+      { q: 'Have you ever tried CTF (Capture The Flag) challenges?',
+        opts: [
+          { t: 'Yes, I compete regularly', w: 3 },
+          { t: 'Yes, a few times', w: 2 },
+          { t: 'No, but I want to', w: 1 },
+          { t: 'Never heard of it', w: 0 }
+        ]},
+      { q: 'How comfortable are you with Linux?',
+        opts: [
+          { t: 'Very — it\'s my daily driver', w: 3 },
+          { t: 'Comfortable with the terminal', w: 2 },
+          { t: 'Basic commands only', w: 1 },
+          { t: 'Windows/Mac only so far', w: 0 }
+        ]},
+      { q: 'What\'s your take on rules & compliance?',
+        opts: [
+          { t: 'Essential — frameworks protect everyone', w: 3 },
+          { t: 'Necessary but I prefer hands-on work', w: 2 },
+          { t: 'I find it boring honestly', w: 1 },
+          { t: 'I prefer to work outside rules', w: 0 }
+        ]},
+      { q: 'How patient are you with slow, detailed analysis?',
+        opts: [
+          { t: 'Very — details are where the truth lives', w: 3 },
+          { t: 'Patient when it matters', w: 2 },
+          { t: 'I prefer faster-paced work', w: 1 },
+          { t: 'I get restless quickly', w: 0 }
+        ]}
+    ],
+    roadmap: {
+      months: 14,
+      phases: [
+        {
+          title: 'Core Foundations', duration: '2 months', emoji: '🧱',
+          steps: [
+            { icon: '🌐', name: 'Networking Fundamentals', type: 'Theory' },
+            { icon: '🐧', name: 'Linux Mastery', type: 'OS' },
+            { icon: '🔒', name: 'Cryptography Basics', type: 'Theory' },
+            { icon: '💻', name: 'Programming (Python)', type: 'Language' },
+          ]
+        },
+        {
+          title: 'Offensive Security', duration: '3 months', emoji: '⚔️',
+          steps: [
+            { icon: '🎯', name: 'Penetration Testing', type: 'Skill' },
+            { icon: '🕷️', name: 'Web App Security', type: 'Domain' },
+            { icon: '🔓', name: 'Ethical Hacking', type: 'Practice' },
+            { icon: '🏁', name: 'CTF Challenges', type: 'Practice' },
+            { icon: '📡', name: 'Network Attacks', type: 'Domain' },
+          ]
+        },
+        {
+          title: 'Defensive Security', duration: '3 months', emoji: '🛡️',
+          steps: [
+            { icon: '🔎', name: 'Digital Forensics', type: 'Domain' },
+            { icon: '🚨', name: 'Incident Response', type: 'Process' },
+            { icon: '📊', name: 'SIEM & Log Analysis', type: 'Tooling' },
+            { icon: '🏛️', name: 'Security Architecture', type: 'Design' },
+          ]
+        },
+        {
+          title: 'Certifications', duration: '3 months', emoji: '🎖️',
+          steps: [
+            { icon: '📜', name: 'CompTIA Security+', type: 'Cert' },
+            { icon: '🏆', name: 'CEH / OSCP Path', type: 'Cert' },
+            { icon: '☁️', name: 'Cloud Security (AWS)', type: 'Cert' },
+          ]
+        },
+        {
+          title: 'Career Launch', duration: '3 months', emoji: '🚀',
+          steps: [
+            { icon: '💼', name: 'Security Portfolio', type: 'Project' },
+            { icon: '🐛', name: 'Bug Bounty Programs', type: 'Practice' },
+            { icon: '🤝', name: 'Security Community', type: 'Network' },
+          ]
+        }
+      ]
+    }
+  },
+
+  ai: {
+    emoji: '🤖', name: 'AI & Data Science',
+    color: 'tc-purple', accentColor: '#a78bfa',
+    tagline: 'Train machines to think, learn, and decide.',
+    pills: ['Machine Learning', 'Deep Learning', 'NLP', 'Data Engineering'],
+    desc: 'AI & Data Science engineers are building the most transformative technology in human history. You\'ll design models that see, understand language, and make predictions at superhuman scale.',
+    questions: [
+      { q: 'How strong is your math background?',
+        opts: [
+          { t: 'Strong — Calculus, Linear Algebra, Stats', w: 3 },
+          { t: 'Good — comfortable with basics', w: 2 },
+          { t: 'Rusty — need to review', w: 1 },
+          { t: 'Weak — significant gaps', w: 0 }
+        ]},
+      { q: 'What type of AI problem excites you?',
+        opts: [
+          { t: 'Building large language models & NLP', w: 3 },
+          { t: 'Computer vision & image recognition', w: 3 },
+          { t: 'Recommender systems & prediction', w: 2 },
+          { t: 'Data pipelines & business analytics', w: 2 }
+        ]},
+      { q: 'Have you worked with any data analysis tools?',
+        opts: [
+          { t: 'Yes — Python, Pandas, NumPy regularly', w: 3 },
+          { t: 'Some — Excel or basic scripts', w: 2 },
+          { t: 'Minimal — just getting started', w: 1 },
+          { t: 'No experience yet', w: 0 }
+        ]},
+      { q: 'How do you feel about reading research papers?',
+        opts: [
+          { t: 'I love it — staying current is key', w: 3 },
+          { t: 'I can if needed', w: 2 },
+          { t: 'Dense but I push through', w: 1 },
+          { t: 'I avoid it when possible', w: 0 }
+        ]},
+      { q: 'What would your ideal AI project be?',
+        opts: [
+          { t: 'A model that beats humans at a task', w: 3 },
+          { t: 'A data pipeline analyzing billions of rows', w: 2 },
+          { t: 'An AI product used by real people', w: 3 },
+          { t: 'An automated business analytics dashboard', w: 2 }
+        ]},
+      { q: 'How comfortable are you with ambiguity in problems?',
+        opts: [
+          { t: 'Very — open-ended problems are my fuel', w: 3 },
+          { t: 'Comfortable with some structure', w: 2 },
+          { t: 'I prefer defined problems', w: 1 },
+          { t: 'I need clear step-by-step tasks', w: 0 }
+        ]}
+    ],
+    roadmap: {
+      months: 14,
+      phases: [
+        {
+          title: 'Math & Programming', duration: '2 months', emoji: '📐',
+          steps: [
+            { icon: '∑', name: 'Linear Algebra', type: 'Math' },
+            { icon: '📊', name: 'Statistics & Probability', type: 'Math' },
+            { icon: '🐍', name: 'Python for Data Science', type: 'Language' },
+            { icon: '🔢', name: 'NumPy & Pandas', type: 'Library' },
+          ]
+        },
+        {
+          title: 'Machine Learning', duration: '3 months', emoji: '🧠',
+          steps: [
+            { icon: '📈', name: 'Supervised Learning', type: 'Core' },
+            { icon: '🔍', name: 'Unsupervised Learning', type: 'Core' },
+            { icon: '🎯', name: 'Model Evaluation', type: 'Skill' },
+            { icon: '🌲', name: 'Scikit-Learn Mastery', type: 'Library' },
+            { icon: '📉', name: 'Feature Engineering', type: 'Skill' },
+          ]
+        },
+        {
+          title: 'Deep Learning', duration: '3 months', emoji: '🕸️',
+          steps: [
+            { icon: '🔥', name: 'PyTorch / TensorFlow', type: 'Framework' },
+            { icon: '🖼️', name: 'Computer Vision (CNNs)', type: 'Domain' },
+            { icon: '💬', name: 'NLP & Transformers', type: 'Domain' },
+            { icon: '🎨', name: 'Generative AI', type: 'Emerging' },
+          ]
+        },
+        {
+          title: 'Data Engineering', duration: '2 months', emoji: '⚙️',
+          steps: [
+            { icon: '🗄️', name: 'SQL & NoSQL', type: 'Data' },
+            { icon: '🌊', name: 'Data Pipelines', type: 'Engineering' },
+            { icon: '☁️', name: 'Cloud ML (SageMaker)', type: 'Platform' },
+            { icon: '📊', name: 'Data Visualization', type: 'Skill' },
+          ]
+        },
+        {
+          title: 'Portfolio & Research', duration: '4 months', emoji: '🚀',
+          steps: [
+            { icon: '📄', name: 'Kaggle Competitions', type: 'Practice' },
+            { icon: '🔬', name: 'Research Paper Implementation', type: 'Research' },
+            { icon: '💼', name: 'Capstone Project', type: 'Project' },
+            { icon: '🤝', name: 'AI Community & Papers', type: 'Network' },
+          ]
+        }
+      ]
+    }
+  },
+
+  bi: {
+    emoji: '🧬', name: 'Bio-informatics',
+    color: 'tc-green', accentColor: '#4ade80',
+    tagline: 'Decode the language written in every living cell.',
+    pills: ['Genomics', 'Protein Structure', 'Clinical Data', 'R & Python'],
+    desc: 'Bio-informaticians sit at the cutting edge of medicine and computing — analyzing genomic sequences, modeling protein folding, and enabling the next generation of personalized healthcare.',
+    questions: [
+      { q: 'How strong is your biology background?',
+        opts: [
+          { t: 'Strong — genetics & molecular bio', w: 3 },
+          { t: 'Good — general biology knowledge', w: 2 },
+          { t: 'Basic — high school level', w: 1 },
+          { t: 'Minimal — mostly CS background', w: 0 }
+        ]},
+      { q: 'What draws you to bio-informatics?',
+        opts: [
+          { t: 'Advancing medicine through data', w: 3 },
+          { t: 'Analyzing genomic sequences', w: 3 },
+          { t: 'The interdisciplinary challenge', w: 2 },
+          { t: 'Research and publication opportunities', w: 2 }
+        ]},
+      { q: 'How comfortable are you with R or Python?',
+        opts: [
+          { t: 'Comfortable with both', w: 3 },
+          { t: 'Comfortable with Python', w: 2 },
+          { t: 'Basic scripting knowledge', w: 1 },
+          { t: 'No programming experience yet', w: 0 }
+        ]},
+      { q: 'How patient are you with long research cycles?',
+        opts: [
+          { t: 'Very — long-term impact is worth it', w: 3 },
+          { t: 'Patient if I see progress', w: 2 },
+          { t: 'I prefer shorter feedback loops', w: 1 },
+          { t: 'I need fast results', w: 0 }
+        ]},
+      { q: 'Are you interested in academic / research roles?',
+        opts: [
+          { t: 'Yes — I want to publish and research', w: 3 },
+          { t: 'Open to it alongside industry', w: 2 },
+          { t: 'Preferably industry-focused', w: 1 },
+          { t: 'No, strictly industry', w: 0 }
+        ]},
+      { q: 'How excited are you about interdisciplinary work?',
+        opts: [
+          { t: 'Very — the intersection is where magic happens', w: 3 },
+          { t: 'Excited, if well-defined', w: 2 },
+          { t: 'I prefer specializing deeply', w: 1 },
+          { t: 'I find it confusing', w: 0 }
+        ]}
+    ],
+    roadmap: {
+      months: 16,
+      phases: [
+        {
+          title: 'Dual Foundations', duration: '3 months', emoji: '🧱',
+          steps: [
+            { icon: '🐍', name: 'Python & R Programming', type: 'Language' },
+            { icon: '🧬', name: 'Molecular Biology Core', type: 'Biology' },
+            { icon: '📊', name: 'Biostatistics', type: 'Math' },
+            { icon: '🗄️', name: 'Biological Databases', type: 'Domain' },
+          ]
+        },
+        {
+          title: 'Genomics & Sequencing', duration: '3 months', emoji: '🔬',
+          steps: [
+            { icon: '🧪', name: 'DNA Sequencing Analysis', type: 'Domain' },
+            { icon: '🔄', name: 'NGS Pipelines', type: 'Tool' },
+            { icon: '📈', name: 'Variant Calling', type: 'Method' },
+            { icon: '🌍', name: 'NCBI / Ensembl APIs', type: 'Tool' },
+          ]
+        },
+        {
+          title: 'Structural Biology', duration: '3 months', emoji: '🔭',
+          steps: [
+            { icon: '🧩', name: 'Protein Structure Prediction', type: 'Domain' },
+            { icon: '🤖', name: 'AlphaFold & Tools', type: 'AI Tool' },
+            { icon: '💊', name: 'Drug Discovery Basics', type: 'Application' },
+            { icon: '📐', name: 'Molecular Docking', type: 'Method' },
+          ]
+        },
+        {
+          title: 'Clinical & ML Applications', duration: '4 months', emoji: '🏥',
+          steps: [
+            { icon: '🧠', name: 'ML for Biology', type: 'Applied AI' },
+            { icon: '🏥', name: 'Clinical Data Analysis', type: 'Domain' },
+            { icon: '📋', name: 'EHR & FHIR Standards', type: 'Standard' },
+            { icon: '🔬', name: 'Single-Cell Analysis', type: 'Advanced' },
+          ]
+        },
+        {
+          title: 'Research & Career', duration: '3 months', emoji: '🚀',
+          steps: [
+            { icon: '📄', name: 'Research Publication', type: 'Research' },
+            { icon: '💼', name: 'Portfolio & GitHub', type: 'Career' },
+            { icon: '🤝', name: 'BioHackathons', type: 'Community' },
+          ]
+        }
+      ]
+    }
+  },
+
+  ce: {
+    emoji: '⚙️', name: 'Computer Engineering',
+    color: 'tc-rose', accentColor: '#fb7185',
+    tagline: 'Design the machines at the heart of everything.',
+    pills: ['Embedded Systems', 'VLSI', 'IoT', 'FPGA'],
+    desc: 'Computer Engineers design the physical and logical layer that every other discipline builds upon — from the chips in your phone to the systems guiding spacecraft.',
+    questions: [
+      { q: 'How interested are you in hardware & electronics?',
+        opts: [
+          { t: 'Deeply — circuits and chips fascinate me', w: 3 },
+          { t: 'Interested — happy to bridge both worlds', w: 2 },
+          { t: 'Slightly — I prefer the software side', w: 1 },
+          { t: 'I prefer pure software', w: 0 }
+        ]},
+      { q: 'What excites you most in computer engineering?',
+        opts: [
+          { t: 'Designing chips that power the future', w: 3 },
+          { t: 'Building embedded systems & robots', w: 3 },
+          { t: 'Optimizing for power & performance', w: 2 },
+          { t: 'Making hardware talk to software', w: 2 }
+        ]},
+      { q: 'Have you worked with microcontrollers (Arduino, Raspberry Pi)?',
+        opts: [
+          { t: 'Yes — built real projects', w: 3 },
+          { t: 'Tinkered a bit', w: 2 },
+          { t: 'Want to learn', w: 1 },
+          { t: 'No experience', w: 0 }
+        ]},
+      { q: 'How comfortable is low-level programming (C, Assembly)?',
+        opts: [
+          { t: 'Very — I think in registers', w: 3 },
+          { t: 'Comfortable with C', w: 2 },
+          { t: 'Basic understanding', w: 1 },
+          { t: 'Only high-level languages', w: 0 }
+        ]},
+      { q: 'Are you okay with slow iteration cycles in hardware?',
+        opts: [
+          { t: 'Yes — quality hardware takes time', w: 3 },
+          { t: 'Patient enough', w: 2 },
+          { t: 'Prefer faster feedback', w: 1 },
+          { t: 'I need quick feedback loops', w: 0 }
+        ]},
+      { q: 'How drawn are you to IoT and physical computing?',
+        opts: [
+          { t: 'Strongly — the physical world is the frontier', w: 3 },
+          { t: 'Interested in specific applications', w: 2 },
+          { t: 'Curious but unsure', w: 1 },
+          { t: 'I prefer screens over sensors', w: 0 }
+        ]}
+    ],
+    roadmap: {
+      months: 14,
+      phases: [
+        {
+          title: 'Electronics & Logic', duration: '2 months', emoji: '⚡',
+          steps: [
+            { icon: '🔌', name: 'Digital Logic Design', type: 'Core' },
+            { icon: '💡', name: 'Electronics Fundamentals', type: 'Physics' },
+            { icon: '💻', name: 'C & Assembly Programming', type: 'Language' },
+            { icon: '📐', name: 'Boolean Algebra', type: 'Math' },
+          ]
+        },
+        {
+          title: 'Computer Architecture', duration: '3 months', emoji: '🏛️',
+          steps: [
+            { icon: '🧠', name: 'CPU Architecture & Design', type: 'Core' },
+            { icon: '💾', name: 'Memory Hierarchy', type: 'Core' },
+            { icon: '🔄', name: 'Pipelining & Parallelism', type: 'Advanced' },
+            { icon: '🔧', name: 'RISC-V & x86', type: 'ISA' },
+          ]
+        },
+        {
+          title: 'Embedded Systems', duration: '3 months', emoji: '📟',
+          steps: [
+            { icon: '🤖', name: 'Microcontrollers (ARM)', type: 'Platform' },
+            { icon: '⏱️', name: 'Real-Time OS (RTOS)', type: 'OS' },
+            { icon: '🌐', name: 'IoT Protocols', type: 'Networking' },
+            { icon: '🔋', name: 'Power Optimization', type: 'Design' },
+            { icon: '🧩', name: 'Hardware-Software Interface', type: 'Integration' },
+          ]
+        },
+        {
+          title: 'VLSI & FPGA', duration: '3 months', emoji: '🔬',
+          steps: [
+            { icon: '🔷', name: 'Verilog / VHDL', type: 'HDL' },
+            { icon: '🧊', name: 'FPGA Design', type: 'Platform' },
+            { icon: '💎', name: 'VLSI Design Flow', type: 'Advanced' },
+            { icon: '📊', name: 'Timing Analysis', type: 'Method' },
+          ]
+        },
+        {
+          title: 'Capstone & Career', duration: '3 months', emoji: '🚀',
+          steps: [
+            { icon: '🤖', name: 'Robotics / Drone Project', type: 'Project' },
+            { icon: '💼', name: 'Hardware Portfolio', type: 'Career' },
+            { icon: '🎓', name: 'IEEE & Competitions', type: 'Community' },
+          ]
+        }
+      ]
+    }
+  }
+};
+
+// ═══════════════════════════════════
+//  STATE
+// ═══════════════════════════════════
+let state = {
+  screen: 'home',       // home | quiz | result | roadmap
+  trackKey: null,
+  qIdx: 0,
+  totalScore: 0,
+  maxScore: 0,
+  timer: null,
+  timeLeft: 0,
+  completedSteps: new Set(),
+  history: []
+};
+
+// ═══════════════════════════════════
+//  NAVIGATION
+// ═══════════════════════════════════
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('s-' + id).classList.add('active');
+  state.screen = id;
+  const back = document.getElementById('navBack');
+  back.classList.toggle('show', id !== 'home');
+  window.scrollTo(0, 0);
+}
+
+function goHome() {
+  clearInterval(state.timer);
+  state = { ...state, screen:'home', trackKey:null, qIdx:0, totalScore:0, maxScore:0 };
+  showScreen('home');
+}
+
+function goBack() {
+  const hist = state.history;
+  if (hist.length) {
+    const prev = hist.pop();
+    if (prev === 'home') goHome();
+    else if (prev === 'quiz') startQuiz(state.trackKey, false);
+    else if (prev === 'result') showResult();
+    else showScreen(prev);
+  } else goHome();
+}
+
+// ═══════════════════════════════════
+//  RENDER HOME
+// ═══════════════════════════════════
+function renderHome() {
+  const grid = document.getElementById('tracksGrid');
+  grid.innerHTML = '';
+  Object.entries(TRACKS).forEach(([key, t], i) => {
+    const card = document.createElement('div');
+    card.className = `track-card ${t.color}`;
+    card.style.animationDelay = `${i * 0.06}s`;
+    card.innerHTML = `
+      <div class="track-emoji-wrap">${t.emoji}</div>
+      <div class="track-name">${t.name}</div>
+      <div class="track-tagline">${t.tagline}</div>
+      <div class="track-pills">${t.pills.map(p => `<span class="pill">${p}</span>`).join('')}</div>
+      <div class="track-cta">Take the Assessment <div class="cta-arrow">→</div></div>
+    `;
+    card.onclick = () => selectTrack(key);
+    grid.appendChild(card);
+  });
+}
+
+function selectTrack(key) {
+  state.history.push('home');
+  startQuiz(key, true);
+}
+
+// ═══════════════════════════════════
+//  QUIZ
+// ═══════════════════════════════════
+function startQuiz(key, fresh = true) {
+  const track = TRACKS[key];
+  state.trackKey = key;
+  if (fresh) {
+    state.qIdx = 0;
+    state.totalScore = 0;
+    state.maxScore = track.questions.reduce((a, q) =>
+      a + Math.max(...q.opts.map(o => o.w)), 0);
+  }
+  document.getElementById('qTrackChip').innerHTML = `${track.emoji} ${track.name}`;
+  showScreen('quiz');
+  renderQuestion();
+}
+
+function renderQuestion() {
+  const track = TRACKS[state.trackKey];
+  const qs = track.questions;
+  const q = qs[state.qIdx];
+  const total = qs.length;
+
+  document.getElementById('qNum').textContent = `Question ${state.qIdx + 1} / ${total}`;
+  document.getElementById('qProgressBar').style.width = `${(state.qIdx / total) * 100}%`;
+
+  const qEl = document.getElementById('qText');
+  qEl.style.opacity = 0;
+  qEl.style.transform = 'translateY(10px)';
+  qEl.textContent = q.q;
+  setTimeout(() => {
+    qEl.style.transition = 'all .3s';
+    qEl.style.opacity = 1;
+    qEl.style.transform = 'translateY(0)';
+  }, 10);
+
+  const optsEl = document.getElementById('qOptions');
+  optsEl.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'q-opt';
+    btn.innerHTML = `<div class="q-opt-idx">${String.fromCharCode(65+i)}</div>${opt.t}`;
+    btn.style.animationDelay = `${i * 0.05}s`;
+    btn.style.animation = 'riseIn .4s ease both';
+    btn.onclick = () => pickAnswer(opt.w, btn);
+    optsEl.appendChild(btn);
+  });
+
+  startTimer(15);
+}
+
+function pickAnswer(weight, btn) {
+  clearInterval(state.timer);
+  document.querySelectorAll('.q-opt').forEach(b => b.disabled = true);
+  btn.classList.add('picked');
+  state.totalScore += weight;
+
+  setTimeout(() => {
+    state.qIdx++;
+    if (state.qIdx < TRACKS[state.trackKey].questions.length) {
+      renderQuestion();
+    } else {
+      state.history.push('quiz');
+      showResult();
+    }
+  }, 450);
+}
+
+function startTimer(seconds) {
+  clearInterval(state.timer);
+  state.timeLeft = seconds;
+  const arc = document.getElementById('timerArc');
+  const num = document.getElementById('timerNum');
+  const circ = 145;
+
+  function update() {
+    const pct = state.timeLeft / seconds;
+    arc.style.strokeDashoffset = circ - (circ * pct);
+    arc.style.stroke = state.timeLeft <= 5 ? '#f87171' : '#4f8ef7';
+    num.textContent = state.timeLeft;
+    num.style.color = state.timeLeft <= 5 ? '#f87171' : '';
+  }
+
+  update();
+  state.timer = setInterval(() => {
+    state.timeLeft--;
+    update();
+    if (state.timeLeft <= 0) {
+      clearInterval(state.timer);
+      state.qIdx++;
+      if (state.qIdx < TRACKS[state.trackKey].questions.length) renderQuestion();
+      else { state.history.push('quiz'); showResult(); }
+    }
+  }, 1000);
+}
+
+// ═══════════════════════════════════
+//  RESULT
+// ═══════════════════════════════════
+function showResult() {
+  clearInterval(state.timer);
+  const track = TRACKS[state.trackKey];
+  const pct = Math.round((state.totalScore / state.maxScore) * 100);
+
+  const wrap = document.getElementById('rIcon');
+  wrap.textContent = track.emoji;
+  wrap.style.background = `${track.accentColor}18`;
+
+  document.getElementById('rName').textContent = track.name;
+
+  let tier, tierColor;
+  if (pct >= 80) { tier = '🔥 Excellent Fit'; tierColor = '#4ade80'; }
+  else if (pct >= 55) { tier = '✨ Good Match'; tierColor = '#4f8ef7'; }
+  else if (pct >= 35) { tier = '📖 Developing Fit'; tierColor = '#f59e0b'; }
+  else { tier = '🌱 Early Stage'; tierColor = '#a78bfa'; }
+
+  document.getElementById('rDesc').textContent = track.desc;
+
+  document.getElementById('rScores').innerHTML = `
+    <div class="score-chip"><span class="score-num" style="color:${track.accentColor}">${pct}%</span>&nbsp;Compatibility Score</div>
+    <div class="score-chip" style="color:${tierColor}">${tier}</div>
+    <div class="score-chip"><span class="score-num">${track.roadmap.months}</span>&nbsp;Month Roadmap</div>
+  `;
+
+  showScreen('result');
+}
+
+function retakeQuiz() {
+  state.history.push('result');
+  startQuiz(state.trackKey, true);
+}
+
+// ═══════════════════════════════════
+//  ROADMAP
+// ═══════════════════════════════════
+function goRoadmap() {
+  state.history.push('result');
+  const track = TRACKS[state.trackKey];
+  const rm = track.roadmap;
+
+  document.getElementById('rmTitle').innerHTML = `${track.emoji} ${track.name}`;
+  document.getElementById('rmSub').textContent = `Follow these ${rm.phases.length} phases to become a professional ${track.name} engineer.`;
+  document.getElementById('rmPhases').textContent = rm.phases.length;
+  document.getElementById('rmTopics').textContent = rm.phases.reduce((a,p) => a + p.steps.length, 0);
+  document.getElementById('rmMonths').textContent = rm.months;
+
+  renderPhases(track);
+  showScreen('roadmap');
+  updateProgress();
+}
+
+function renderPhases(track) {
+  const container = document.getElementById('phasesContainer');
+  container.innerHTML = '';
+
+  track.roadmap.phases.forEach((phase, pi) => {
+    const phaseEl = document.createElement('div');
+    phaseEl.className = 'phase';
+    phaseEl.id = `phase-${pi}`;
+
+    const isLast = pi === track.roadmap.phases.length - 1;
+
+    phaseEl.innerHTML = `
+      <div class="phase-spine">
+        <div class="phase-node" style="background:${track.accentColor}18;border-color:${track.accentColor}40;color:${track.accentColor}">${phase.emoji}</div>
+        ${!isLast ? '<div class="phase-line"></div>' : ''}
+      </div>
+      <div class="phase-body">
+        <div class="phase-header">
+          <span class="phase-num">Phase ${pi+1}</span>
+          <span class="phase-title">${phase.title}</span>
+          <span class="phase-duration">${phase.duration}</span>
+        </div>
+        <div class="steps-grid">
+          ${phase.steps.map((step, si) => {
+            const id = `${pi}-${si}`;
+            const done = state.completedSteps.has(id);
+            return `
+              <div class="step-card ${done ? 'completed' : ''}" id="step-${id}" onclick="toggleStep('${id}')">
+                <div class="step-top">
+                  <span class="step-icon">${step.icon}</span>
+                  <div class="step-check">${done ? '✓' : ''}</div>
+                </div>
+                <div class="step-name">${step.name}</div>
+                <div class="step-type">${step.type}</div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+    container.appendChild(phaseEl);
+  });
+}
+
+function toggleStep(id) {
+  if (state.completedSteps.has(id)) state.completedSteps.delete(id);
+  else state.completedSteps.add(id);
+
+  const card = document.getElementById('step-' + id);
+  const [pi] = id.split('-');
+  const check = card.querySelector('.step-check');
+
+  if (state.completedSteps.has(id)) {
+    card.classList.add('completed');
+    check.textContent = '✓';
+  } else {
+    card.classList.remove('completed');
+    check.textContent = '';
+  }
+
+  // check if whole phase done
+  const track = TRACKS[state.trackKey];
+  track.roadmap.phases.forEach((phase, pi2) => {
+    const allDone = phase.steps.every((_, si) => state.completedSteps.has(`${pi2}-${si}`));
+    const phaseEl = document.getElementById(`phase-${pi2}`);
+    if (phaseEl) phaseEl.classList.toggle('done', allDone);
+  });
+
+  updateProgress();
+}
+
+function updateProgress() {
+  const track = TRACKS[state.trackKey];
+  const total = track.roadmap.phases.reduce((a,p) => a + p.steps.length, 0);
+  const done = state.completedSteps.size;
+  const pct = total > 0 ? Math.round((done / total) * 100) : 0;
+  document.getElementById('opPct').textContent = pct + '%';
+  document.getElementById('opFill').style.width = pct + '%';
+}
+
+// ── INIT ──
+renderHome();
+</script>
+
+
+</body></html>
