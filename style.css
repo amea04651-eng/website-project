@@ -46,6 +46,39 @@ body {
         gap: 20px;
         padding: 20px;
     }
-    
+    body {
+        background-color: #6366f1;
+        color: #020617;
+        font-family: 'verdana';
+        }
+        h1 {
+            color: #17171e;
+            font-size: medium;
+            text-align: center;
+            margin-top: 20px;
+            }
+        h2 {
+            color: aliceblue;
+            font-size: 30px;
+            margin-bottom: 15px;}
+        p {
+            color: #17171e;
+            line-height: 1.6;
+            margin: 15px 20px;
+            font-size: 18px;
+            }
+        a {
+            color: aqua;
+            text-decoration: none;
+            }
+    .container {
+        width: 80%;
+        margin: 20px;
+        padding: 20px;
+        background-color: bisque;
+        box-shadow: 0  4px 8px;
+        border-radius: 10px;
+        }            
+
 }
 }
